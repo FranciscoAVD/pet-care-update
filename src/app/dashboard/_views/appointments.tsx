@@ -1,3 +1,4 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import React from 'react'
 const appointments = [
     { id: 1, petName: 'Charlie', ownerName: 'Emma Wilson', date: '2023-10-15', time: '10:00 AM' },
@@ -6,6 +7,19 @@ const appointments = [
 ]
 export default function Appointments() {
   return (
-    <main>Appointments</main>
+    <main className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-4 bg-muted">
+    {appointments.map((appointment) => (
+      <Card key={appointment.id} className='aspect-video'>
+        <CardHeader>
+          <CardTitle>{appointment.petName}</CardTitle>
+          <CardDescription>{appointment.ownerName}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Date: {appointment.date}</p>
+          <p>Time: {appointment.time}</p>
+        </CardContent>
+      </Card>
+    ))}
+  </main>
   )
 }

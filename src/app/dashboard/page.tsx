@@ -1,14 +1,20 @@
 "use client";
-import { useState } from "react";
+import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 import Main from "./_views/main";
 import Staff from "./_views/staff";
 import Appointments from "./_views/appointments";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PawPrintIcon } from "lucide-react";
+import { PawPrintIcon, CalendarIcon, UsersIcon, HouseIcon, SettingsIcon,LucideProps } from "lucide-react";
 type TViews = "main" | "appointments" | "staff"
-const navLinks: { label: string, value: TViews }[] = [
-    { label: "Boarded Pets", value: "main" }, { label: "Appointments", value: "appointments" }, { label: "Staff", value: "staff" }
+const navLinks: { 
+    label: string, 
+    value: TViews, 
+    icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
+}[] = [
+    { label: "Boarded Pets", value: "main", icon: PawPrintIcon }, 
+    { label: "Appointments", value: "appointments", icon: CalendarIcon }, 
+    { label: "Staff", value: "staff", icon: UsersIcon }
 ];
 
 function DashbaordView({ view }: { view: TViews }) {
@@ -23,15 +29,29 @@ function DashbaordView({ view }: { view: TViews }) {
 
     }
 }
-function Sidebar({ open, set, className }: { open: boolean, set: (v: TViews) => void, className?: string }) {
+function Sidebar({ view, open, set, className }: { open: boolean, set: (v: TViews) => void, className?: string, view: TViews }) {
     return (
-        <aside className={cn(`p-4 ${className}`)}>
-            <span className="flex items-center gap-x-2 text-2xl font-semibold"><PawPrintIcon className="size-6"/> Pet Boarding</span>
-            <nav>
+        <aside className={cn(`flex flex-col gap-y-4 p-4 ${className}`)}>
+            <span className="flex items-center gap-x-2 text-2xl font-semibold"><HouseIcon className="size-6"/> Pet Boarding</span>
+            <nav className="">
                 <ul>
-                    {navLinks.map(({ label, value }) => <li key={value}><Button onClick={() => set(value)}>{label}</Button></li>)}
+                    {navLinks.map((nav) => (
+                        <li key={nav.value}>
+                            <Button
+                            variant={view === nav.value ? "secondary" : "ghost"}
+                            className="w-full justify-normal gap-x-2"
+                            onClick={() => set(nav.value)}>
+                                <nav.icon className="size-4"/>
+                                <span>{nav.label}</span>
+                            </Button>
+                        </li>
+                    ))}
                 </ul>
             </nav>
+            <div className="mt-auto">
+                <span className="sr-only">Settings</span>
+                <Button size={"icon"} variant={"ghost"}><SettingsIcon /></Button>
+            </div>
         </aside>
     )
 }
@@ -40,7 +60,7 @@ export default function Dashboard() {
     const [view, setView] = useState<TViews>("main")
     return (
         <div className="flex lg:h-screen">
-            <Sidebar open={sidebarOpen} set={setView} className="grow max-w-xs h-full border"/>
+            <Sidebar open={sidebarOpen} set={setView} view={view} className="shrink-0 w-[20rem] h-full border"/>
             <DashbaordView view={view} />
         </div>
     );
