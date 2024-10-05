@@ -10,6 +10,6 @@ export function useDebounce<T>(value: T, delay = 500):[debounce:T,loading:boolea
       setLoading(false);
     }, delay);
     return () => clearTimeout(timeout);
-  }, [value]);
+  }, [value, delay]);
   return [debounce, loading];
 }
