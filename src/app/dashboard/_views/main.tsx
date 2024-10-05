@@ -74,8 +74,7 @@ export default function Main() {
         </Card>
         <Card className="col-span-full">
             <CardHeader>
-              <CardTitle>Occupancy Overview 
-                <span className='font-normal'>&#40;{new Date().toLocaleDateString("en-us",{month: "long"})}&#41;</span>
+              <CardTitle className='flex justify-between flex-wrap gap-x-2'>Occupancy Overview <span className='font-normal'>&#40;{new Date().toLocaleDateString("en-us",{month: "long"})}&#41;</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="pl-2">

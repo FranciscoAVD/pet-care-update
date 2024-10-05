@@ -5,9 +5,10 @@ import Staff from "./_views/staff";
 import Appointments from "./_views/appointments";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PawPrintIcon, CalendarIcon, UsersIcon, HouseIcon, SettingsIcon,LucideProps, MenuIcon, XIcon } from "lucide-react";
+import { PawPrintIcon, CalendarIcon, UsersIcon, HouseIcon, SettingsIcon,LucideProps, MenuIcon, XIcon, CircleDollarSignIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-type TViews = "main" | "appointments" | "staff"
+import Insights from "./_views/insights";
+type TViews = "main" | "appointments" | "staff" | "insights"
 const navLinks: { 
     label: string, 
     value: TViews, 
@@ -15,7 +16,8 @@ const navLinks: {
 }[] = [
     { label: "Boarded Pets", value: "main", icon: PawPrintIcon }, 
     { label: "Appointments", value: "appointments", icon: CalendarIcon }, 
-    { label: "Staff", value: "staff", icon: UsersIcon }
+    { label: "Staff", value: "staff", icon: UsersIcon },
+    { label: "Insights", value: "insights", icon: CircleDollarSignIcon}
 ];
 
 function DashbaordView({ view }: { view: TViews }) {
@@ -25,6 +27,8 @@ function DashbaordView({ view }: { view: TViews }) {
             return <Staff />
         case "appointments":
             return <Appointments />
+        case "insights":
+            return <Insights />
         default:
             return <Main />
 
