@@ -8,7 +8,8 @@ const staff = [
 ]
 export default function Staff() {
   return (
-    <main className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-4 bg-muted">
+    <main className="h-full grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-4 lg:py-6 lg:px-10">
+      <h1 className='text-2xl font-semibold text-black/70 col-span-full'>Staff</h1>
     {staff.map((member) => (
       <Card key={member.id} className='aspect-video'>
         <CardHeader>

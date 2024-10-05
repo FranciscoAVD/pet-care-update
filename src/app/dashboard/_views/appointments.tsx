@@ -7,7 +7,8 @@ const appointments = [
 ]
 export default function Appointments() {
   return (
-    <main className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-4 bg-muted">
+    <main className="h-full grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-4 lg:py-6 lg:px-8">
+      <h1 className='text-2xl font-semibold text-black/70 col-span-full'>Appointments</h1>
     {appointments.map((appointment) => (
       <Card key={appointment.id} className='aspect-video'>
         <CardHeader>

@@ -5,7 +5,8 @@ import Staff from "./_views/staff";
 import Appointments from "./_views/appointments";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PawPrintIcon, CalendarIcon, UsersIcon, HouseIcon, SettingsIcon,LucideProps } from "lucide-react";
+import { PawPrintIcon, CalendarIcon, UsersIcon, HouseIcon, SettingsIcon,LucideProps, MenuIcon, XIcon } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 type TViews = "main" | "appointments" | "staff"
 const navLinks: { 
     label: string, 
@@ -29,10 +30,20 @@ function DashbaordView({ view }: { view: TViews }) {
 
     }
 }
-function Sidebar({ view, open, set, className }: { open: boolean, set: (v: TViews) => void, className?: string, view: TViews }) {
+function Sidebar({ view, open, setView, className, setOpen }: { open: boolean, setView: (v: TViews) => void, className?: string, view: TViews, setOpen: (v: boolean)=> void }) {
     return (
-        <aside className={cn(`flex flex-col gap-y-4 p-4 ${className}`)}>
-            <span className="flex items-center gap-x-2 text-2xl font-semibold"><HouseIcon className="size-6"/> Pet Boarding</span>
+        <aside className={cn(`fixed lg:static left-0 top-0 bottom-0 ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} z-50 bg-white flex flex-col p-4 pt-0 transition-transform shadow ${className}`)}>
+            <Button 
+            size={"icon"} 
+            variant={"ghost"} 
+            className="lg:hidden absolute top-1 right-1 text-black/50" 
+            onClick ={()=>setOpen(false)}>
+                <span className="sr-only">Close menu</span>
+                <XIcon className="size-6"/>
+            </Button>
+            <span className="flex items-center gap-x-2 h-20 text-2xl font-semibold">
+                <HouseIcon className="size-6"/> PetCare
+            </span>
             <nav className="">
                 <ul>
                     {navLinks.map((nav) => (
@@ -40,7 +51,10 @@ function Sidebar({ view, open, set, className }: { open: boolean, set: (v: TView
                             <Button
                             variant={view === nav.value ? "secondary" : "ghost"}
                             className="w-full justify-normal gap-x-2"
-                            onClick={() => set(nav.value)}>
+                            onClick={() =>{
+                                setView(nav.value)
+                                setOpen(false);
+                            }}>
                                 <nav.icon className="size-4"/>
                                 <span>{nav.label}</span>
                             </Button>
@@ -59,9 +73,26 @@ export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [view, setView] = useState<TViews>("main")
     return (
-        <div className="flex lg:h-screen">
-            <Sidebar open={sidebarOpen} set={setView} view={view} className="shrink-0 w-[20rem] h-full border"/>
-            <DashbaordView view={view} />
+        <div className="grid grid-rows-[5rem_1fr] lg:grid-rows-none lg:grid-cols-[20rem_1fr] lg:h-screen">
+            <header className="sticky top-0 lg:hidden col-span-full flex items-center px-4 bg-white shadow z-10">
+                <Button 
+                size={"icon"} 
+                variant={"ghost"} 
+                className="ml-auto"
+                onClick={()=>setSidebarOpen(true)}>
+                    <MenuIcon className="size-6"/>
+                </Button>
+            </header>
+            <Sidebar
+                setOpen={setSidebarOpen}
+                open={sidebarOpen} 
+                setView={setView} 
+                view={view} 
+                className="w-full md:max-w-md border"
+            />
+            <ScrollArea className="grow h-full bg-muted">
+                <DashbaordView view={view} />
+            </ScrollArea>
         </div>
     );
 }
